@@ -9,6 +9,17 @@ Individuals are concerned about their impact they have on the environment and ne
 * users will be able to compare themselves to their community
 * Users will be able to see a map of how the lifestyles of their local community are compared to theirs
 
+## Functional Requirements
+* A user will be able to create an account
+* A user will be able to view a heat map for their community
+* A user will have a Eco Credit Score generated for them
+* A user will be able to delete their account
+* A user will be able to update their account information
+* A user can view suggestions based on their score to change their lifestyle
+* A user will be able to compare their Eco Credit Score compared to others in their community
+
+
+
 ## Non-Functional Requirements
 ## Usability
 * Eco Credit Score will be available on all pages in the same location once they login
