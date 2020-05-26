@@ -7,7 +7,7 @@
 ![Wireframe](Images/fp_wireframe.png)
 
 ## Database ERD
-database name : eco-credit
+database name : eco_credit
 relations:
 
 profiles
@@ -17,7 +17,7 @@ password : VARCHAR(20)
 
 location
 userid : SERIAL PRIMARY KEY
-zipcode : INT(5)
+zipcode : INT
 lat : FLOAT
 lon : FLOAT
 
