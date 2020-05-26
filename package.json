@@ -1,0 +1,29 @@
+{
+  "name": "eco-credit",
+  "version": "1.0.0",
+  "description": "[Github Project Board](https://github.com/BryantDavis1986/eco-credit/projects/1)",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BryantDavis1986/eco-credit.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BryantDavis1986/eco-credit/issues"
+  },
+  "homepage": "https://github.com/BryantDavis1986/eco-credit#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.3",
+    "express": "^4.17.1",
+    "method-override": "^3.0.0",
+    "pg": "^8.2.1",
+    "superagent": "^5.2.2"
+  }
+}
