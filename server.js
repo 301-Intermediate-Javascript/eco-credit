@@ -31,41 +31,53 @@ client.connect();
 // Server Locations
 // Get, POST etc
 app.get('/', homeTest);
-app.post('/account/new', createAccount);
+app.post('/account/exist', accountLogin);
 app.get('/account/login', renderLogin);
+app.post('/account/create', createAccount)
 
 // Route Callbacks
 
 // Route '/'
 function homeTest(req, res){
-    res.render('complete/index')
+    if(req.query.username){
+      res.render('complete/index', {'loggedIn': true, 'user': req.query.username})
+    }else {
+      res.render('complete/index', {'loggedIn': false, 'user': req.query.username})
+    }
 }
 
 // Route '/account/new'
 
 function createAccount(req, res){
-  const sql = 'INSERT INTO profiles (username, zipcode) VALUES($1, $2)';
-  const values = [req.body.userName, req.body.password, req.body.zipCode];
-  client.query(sql, values)
-  .then(result => {
-    res.render('complete/login');
+  const sqluserName = 'INSERT INTO profiles (username) VALUES($1) RETURNING ID';
+  const userNamevalue = [req.body.userName];
+  client.query(sqluserName, userNamevalue)
+  .then(username => {
+  const zipCodeSql = 'INSERT INTO location (username, zipcode) VALUES($1, $2)';
+  const zipcodeValue = [username.rows[0].id, req.body.zipCode];
+  client.query(zipCodeSql, zipcodeValue)
+  .then(zipcode =>{
+    res.render('complete/login', {'accountCreated': true, 'failed': false});
+  })
   })
 }
 
 // Route '/account/login'
 
 function renderLogin(req, res){
-  res.render('complete/login');
+  res.render('complete/login', {'accountCreated': false, 'failed': false});
 }
 
 function accountLogin(req, res){
-  console.log(req.body);
   const sql = 'SELECT * from profiles WHERE username=$1';
   const value = [req.body.userName];
   client.query(sql, value)
   .then(userInfo => {
-    console.log(userInfo);
-  
+    if(userInfo.rows.length > 0){
+      res.redirect('/?username=' + req.body.userName);
+    }else{
+      res.render('complete/login', {'failed': true, 'accountCreated': false})
+    }
   })
 }
 
