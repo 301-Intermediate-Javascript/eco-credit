@@ -40,7 +40,11 @@ app.post('/account/create', createAccount)
 
 // Route '/'
 function homeTest(req, res){
-    res.render('complete/index')
+    if(req.query.username){
+      res.render('complete/index', {'loggedIn': true, 'user': req.query.username})
+    }else {
+      res.render('complete/index', {'loggedIn': false, 'user': req.query.username})
+    }
 }
 
 // Route '/account/new'
@@ -50,13 +54,11 @@ function createAccount(req, res){
   const userNamevalue = [req.body.userName];
   client.query(sqluserName, userNamevalue)
   .then(username => {
-    console.log(username)
   const zipCodeSql = 'INSERT INTO location (username, zipcode) VALUES($1, $2)';
   const zipcodeValue = [username.rows[0].id, req.body.zipCode];
   client.query(zipCodeSql, zipcodeValue)
   .then(zipcode =>{
-    console.log(req.body.userName);
-    res.render('complete/index', {'user': req.body.userName, 'loggedIn': true});
+    res.render('complete/login', {'accountCreated': true, 'failed': false});
   })
   })
 }
@@ -64,16 +66,19 @@ function createAccount(req, res){
 // Route '/account/login'
 
 function renderLogin(req, res){
-  res.render('complete/login');
+  res.render('complete/login', {'accountCreated': false, 'failed': false});
 }
 
 function accountLogin(req, res){
-  console.log(req.body);
   const sql = 'SELECT * from profiles WHERE username=$1';
   const value = [req.body.userName];
   client.query(sql, value)
   .then(userInfo => {
-    res.redirect('/');
+    if(userInfo.rows.length > 0){
+      res.redirect('/?username=' + req.body.userName);
+    }else{
+      res.render('complete/login', {'failed': true, 'accountCreated': false})
+    }
   })
 }
 
