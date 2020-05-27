@@ -35,10 +35,15 @@ app.get('/', homeTest);
 app.post('/account/exist', accountLogin);
 app.get('/account/login', renderLogin);
 app.post('/account/create', createAccount);
-app. get('/dashboard/survey', takeSurvey);
+app.get('/dashboard/survey', takeSurvey);
 app.post('/dashboard/map', displayMap);
 
 // Route Callbacks
+
+// test route for suggestions
+app.get('/testsuggestions', (req, res) => {
+  res.render('complete/suggestions');
+})
 
 //test route for CarbonFootprint API
 app.get('/test2', getCarCO2);

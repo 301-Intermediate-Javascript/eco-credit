@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Greener Life</title>
+  <!-- <link rel="stylesheet" href="/css/reset.css"> -->
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/module.css">
+</head>
+<body>
+  <!-- https://www.lifehack.org/articles/lifestyle/20-green-tips-that-will-improve-your-health-and-lifestyle.html -->
+  
+  <!-- if no score available -->
+  <%- include('../partials/scoreStart.ejs') %>
+
+  <!-- if score was higher/better than previous -->
+  <%- include('../partials/scoreBetter.ejs') %>
+
+  <!-- if score was lower/worse than previous -->
+  <%- include('../partials/scoreWorse.ejs') %>
+ 
+  <!-- if scor e was same (else) -->
+  <%- include('../partials/scoreSame.ejs') %>
+  
+</body>
+</html>
