@@ -37,6 +37,28 @@ app.post('/account/create', createAccount)
 
 // Route Callbacks
 
+//test route for CarbonFootprint API
+app.get('/test2', getCarCO2);
+function getCarCO2(req, res) {
+  const url = 'https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromCarTravel';
+  const myKey = process.env.RAPID_API_KEY;
+  const queryForSuper = {
+    distance: '100',
+    vehicle: 'SmallPetrolCar',
+  };
+  superagent.get(url)
+    .set('x-rapidapi-key', myKey)
+    .query(queryForSuper)
+    .then(resultFromSuper => {
+      console.log(resultFromSuper.body.carbonEquivalent)
+      res.send(resultFromSuper.body.carbonEquivalent)
+      // Returns the CO2e in Kg from a travel by car
+    })
+    .catch(error => {
+      console.log('error from getCarCO2 :', error);
+    });
+}
+
 // Route '/'
 function homeTest(req, res){
     if(req.query.username){
@@ -61,6 +83,7 @@ function createAccount(req, res){
   })
   })
 }
+
 
 // Route '/account/login'
 
