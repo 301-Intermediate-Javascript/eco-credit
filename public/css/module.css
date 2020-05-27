@@ -4,6 +4,8 @@
   >> Secondary #2: 70B45A / 479030 / 286C12
 */
 
+@import url('https://fonts.googleapis.com/css2?family=Krona+One&display=swap');
+
 body {
   background: linear-gradient(180deg, #70B45A 25%, #286C12 100%);
   border-left: #0F5D2C 2px solid;
@@ -15,8 +17,8 @@ section {
 }
 
 header {
-  background: url("https://images.pexels.com/photos/1002703/pexels-photo-1002703.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940") no-repeat center border-box;
-  background-size: 600px 400px;
+  background: url("../images/header_img.jpg") no-repeat right;
+  background-size: 960px 664px;
   background-color: #2D8632;
 }
 
@@ -26,21 +28,71 @@ nav {
   border-radius: 40px;
 }
 
+footer {
+  background-color: #2D8632;
+  text-align: center;
+}
+
+.account-link {
+  display: flex;
+  align-items: center;
+}
+
+.small-logo {
+  width: 30px;
+  height: 30px;
+  margin: 5px;
+}
+
+.large-logo {
+  width: 50px;
+  height: 50px;
+  margin: 5px;
+  margin-left: 10px;
+}
+
+.large-logo-text {
+  color: #54A759;
+  font-size: 60px;
+  font-family: 'Krona One', sans-serif;
+  text-shadow: 3px 3px #116416;
+}
+
+.feature-description {
+  background: linear-gradient(180deg, #479030 5%, #70B45A 100%);
+  border: 2px #116416 solid;
+  width: 720px;
+  height: 120px;
+  margin: 10px;
+}
+
+.feature-description > h1 {
+  font-size: 30px;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.feature-description > p {
+  margin: 10px 25px 10px 25px;
+}
+
+/* 
+.button-link {
+}
+*/
+
 #map-section {
   margin: 20px;
 }
 
 #map-options {
   margin: 3px;
+  background-color: #e9e9e9;
 }
 
 #map {
   background-color: cadetblue;
   border: 2px black solid;
-  width: 400px;
-  height: 400px;
-}
-
-footer {
-  background-color: #2D8632;
+  width: 600px;
+  height: 600px;
 }
