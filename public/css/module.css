@@ -1,0 +1,46 @@
+/* COLOR SCHEME (Highlight / Midtone / Shade)
+  >> Primary: 54A759 / 2D8632 / 116416
+  >> Secondary #1: 4D9A6A / 297B48 / 0F5D2C
+  >> Secondary #2: 70B45A / 479030 / 286C12
+*/
+
+body {
+  background: linear-gradient(180deg, #70B45A 25%, #286C12 100%);
+  border-left: #0F5D2C 2px solid;
+  border-right: #0F5D2C 2px solid;
+}
+
+section {
+  background-color: #54A759;
+}
+
+header {
+  background: url("https://images.pexels.com/photos/1002703/pexels-photo-1002703.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940") no-repeat center border-box;
+  background-size: 600px 400px;
+  background-color: #2D8632;
+}
+
+nav {
+  background-color: #4D9A6A;
+  border: #286C12 2px solid;
+  border-radius: 40px;
+}
+
+#map-section {
+  margin: 20px;
+}
+
+#map-options {
+  margin: 3px;
+}
+
+#map {
+  background-color: cadetblue;
+  border: 2px black solid;
+  width: 400px;
+  height: 400px;
+}
+
+footer {
+  background-color: #2D8632;
+}
