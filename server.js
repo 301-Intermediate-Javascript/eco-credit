@@ -31,6 +31,7 @@ client.connect();
 // Server Locations
 // Get, POST etc
 app.get('/', homeTest);
+
 app.post('/account/exist', accountLogin);
 app.get('/account/login', renderLogin);
 app.post('/account/create', createAccount);
@@ -68,9 +69,11 @@ function homeTest(req, res){
     }else {
       res.render('complete/index', {'loggedIn': false, 'user': req.query.username})
     }
+
 }
 
 // Route '/account/new'
+
 
 function createAccount(req, res){
   const sqluserName = 'INSERT INTO profiles (username) VALUES($1) RETURNING ID';

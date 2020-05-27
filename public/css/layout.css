@@ -4,10 +4,6 @@ body {
   margin-right: 25%;
 }
 
-section {
-  width: 100%;
-}
-
 header {
   width: 100%;
   height: 320px;
@@ -24,10 +20,14 @@ nav {
 
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
 footer {
   width: 100%;
   height: 90px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

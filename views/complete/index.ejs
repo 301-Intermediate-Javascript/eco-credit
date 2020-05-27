@@ -10,44 +10,63 @@
     <link rel="stylesheet" href="/css/module.css">
 </head>
 <body>
-    <section>
-        <header>
-            <p class="large-logo-text">Eco-Credit</p>
-            <img src="images/linden-leaf.png" class="large-logo">
-        </header>
-        <nav>
-            <% if(loggedIn){ %>
+
+    <header>
+        <p class="large-logo-text">Eco-Credit</p>
+        <img src="images/linden-leaf.png" class="large-logo">
+    </header>
+
+    <nav>
+     <% if(loggedIn){ %>
                 <h2>My Dashboard</h2>
             
             <% } %>
-            <a href="/account/login" class="account-link">
-                <p>My Account</p> 
-                <img src="images/linden-leaf.png" class="small-logo">
-            </a>
-        </nav>
-        <% if(loggedIn){ %>
+        <a href="" class="nav-link">
+            <p>Home</p>
+        </a>
+
+        <a href="/account/login" class="account-link">
+            <p>My Account</p> 
+            <img src="images/default_acct_icon.png" class="small-profile-pic">
+        </a>
+    </nav>
+    <% if(loggedIn){ %>
           <a href="/dashboard/survey?username=<%= user %>">Take Survey</a>
           <a href="/dashboard/survey/update">Update Survey</a>
           <a href="/dashboard/suggestions">Suggestions</a>
         
         <% } %>
-        <div id="map-section">
-            <select name="View Map Options" id="map-options">
-                <option value="View Map Options">View Map Options</option>  
-            </select>
-            <section id="map">Map</section>
-        </div>
-        <div class="feature-description">
-            <h1>Content</h1>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem quasi voluptas ut est totam repellendus ullam eveniet, doloremque ea fugit soluta! Iusto, quibusdam fugit dolor et neque est nemo! Atque.</p>
-        </div>
-    </section>
+
+    <div class="feature-description" id="mission-statement">
+        <h1>Who Are We?</h1>
+        <p>Our mission is to give your local community the tools to create more sustainable and eco-friendly living, both for the planet and yourselves!</p>
+    </div>
+
+    <div id="map-section">
+        <select name="View Map Options" id="map-options">
+            <option value="View Map Options">View Map Options</option>  
+        </select>
+        <section id="map">Map</section>
+    </div>
+
+    <div class="feature-description" id="eco-cred-description">
+        <h1>Monitor Your Eco-Credit</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem quasi voluptas ut est totam repellendus ullam eveniet, doloremque ea fugit soluta! Iusto, quibusdam fugit dolor et neque est nemo! Atque.</p>
+    </div>
+
+    <div class="feature-description" id="eco-map-description">
+        <h1>Community Eco-Map</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem quasi voluptas ut est totam repellendus ullam eveniet, doloremque ea fugit soluta! Iusto, quibusdam fugit dolor et neque est nemo! Atque.</p>
+    </div>
+
+    <div class="feature-description" id="green-tips-description">
+        <h1>Green Lifestyle Tips</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem quasi voluptas ut est totam repellendus ullam eveniet, doloremque ea fugit soluta! Iusto, quibusdam fugit dolor et neque est nemo! Atque.</p>
+    </div>
+
+    <!-- <button type="submit" class="button-link">This Is A Test</button> -->
 
 
-<% if(loggedIn){ %>
-    <h2><%= user %></h2>
-
-<% } %>
 </body>
 <footer>
     <a href="">About Us</a>

@@ -2,6 +2,7 @@
 console.log('hello');
 
 $('document').ready(() => {
+
 const createAccount = $('#createAccountForm');
 const loginForm = $('#loginForm');
 const createAccountLink = $('#createAccount');
@@ -19,5 +20,6 @@ loginLink.on('click', (event) =>{
     event.preventDefault();
     loginForm.toggle();
 })
+
 
 })
