@@ -73,7 +73,7 @@ function accountLogin(req, res){
   const value = [req.body.userName];
   client.query(sql, value)
   .then(userInfo => {
-    res.render('complete/index', {'user': req.body.userName, 'loggedIn': true});
+    res.redirect('/');
   })
 }
 
