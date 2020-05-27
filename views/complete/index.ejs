@@ -10,12 +10,17 @@
     <link rel="stylesheet" href="/css/module.css">
 </head>
 <body>
+
     <header>
         <p class="large-logo-text">Eco-Credit</p>
         <img src="images/linden-leaf.png" class="large-logo">
     </header>
 
     <nav>
+     <% if(loggedIn){ %>
+                <h2>My Dashboard</h2>
+            
+            <% } %>
         <a href="" class="nav-link">
             <p>Home</p>
         </a>
@@ -25,6 +30,12 @@
             <img src="images/default_acct_icon.png" class="small-profile-pic">
         </a>
     </nav>
+    <% if(loggedIn){ %>
+          <a href="/dashboard/survey?username=<%= user %>">Take Survey</a>
+          <a href="/dashboard/survey/update">Update Survey</a>
+          <a href="/dashboard/suggestions">Suggestions</a>
+        
+        <% } %>
 
     <div class="feature-description" id="mission-statement">
         <h1>Who Are We?</h1>
@@ -54,6 +65,7 @@
     </div>
 
     <!-- <button type="submit" class="button-link">This Is A Test</button> -->
+
 
 </body>
 <footer>
