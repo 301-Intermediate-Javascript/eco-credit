@@ -9,7 +9,10 @@
 
     <a href="/account/login">Login or create an account</a>
     <h1>Hello front End</h1>
+<% if(loggedIn){ %>
+    <h2><%= user.userName %></h2>
 
+<% } %>
  
 </body>
 </html>

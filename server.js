@@ -32,9 +32,9 @@ app.set('view engine', 'ejs');
 // Get, POST etc
 
 app.get('/', homeTest);
-app.post('/account/new', createAccount);
+app.post('/account/exist', accountLogin);
 app.get('/account/login', renderLogin);
-
+app.post('/account/create', createAccount)
 
 // Route Callbacks
 
@@ -46,11 +46,18 @@ function homeTest(req, res){
 // Route '/account/new'
 
 function createAccount(req, res){
-  const sql = 'INSERT INTO profiles (username, zipcode) VALUES($1, $2)';
-  const values = [req.body.userName, req.body.password, req.body.zipCode];
-  client.query(sql, values)
-  .then(result => {
-    res.render('complete/login');
+  const sqluserName = 'INSERT INTO profiles (username) VALUES($1) RETURNING ID';
+  const userNamevalue = [req.body.userName];
+  client.query(sqluserName, userNamevalue)
+  .then(username => {
+    console.log(username)
+  const zipCodeSql = 'INSERT INTO location (username, zipcode) VALUES($1, $2)';
+  const zipcodeValue = [username.rows[0].id, req.body.zipCode];
+  client.query(zipCodeSql, zipcodeValue)
+  .then(zipcode =>{
+    console.log(req.body.userName);
+    res.render('complete/index', {'user': req.body.userName, 'loggedIn': true});
+  })
   })
 }
 
@@ -66,8 +73,7 @@ function accountLogin(req, res){
   const value = [req.body.userName];
   client.query(sql, value)
   .then(userInfo => {
-    console.log(userInfo);
-  
+    res.render('complete/index', {'user': req.body.userName, 'loggedIn': true});
   })
 }
 
