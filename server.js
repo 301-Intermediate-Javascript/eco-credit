@@ -37,36 +37,36 @@ app.get('/account/login', renderLogin);
 // Route Callbacks
 
 // Route '/'
-function homeTest(req, res){
-    res.render('complete/index')
+function homeTest(req, res) {
+  res.render('complete/index')
 }
 
 // Route '/account/new'
 
-function createAccount(req, res){
+function createAccount(req, res) {
   const sql = 'INSERT INTO profiles (username, zipcode) VALUES($1, $2)';
   const values = [req.body.userName, req.body.password, req.body.zipCode];
   client.query(sql, values)
-  .then(result => {
-    res.render('complete/login');
-  })
+    .then(result => {
+      res.render('complete/login');
+    })
 }
 
 // Route '/account/login'
 
-function renderLogin(req, res){
+function renderLogin(req, res) {
   res.render('complete/login');
 }
 
-function accountLogin(req, res){
+function accountLogin(req, res) {
   console.log(req.body);
   const sql = 'SELECT * from profiles WHERE username=$1';
   const value = [req.body.userName];
   client.query(sql, value)
-  .then(userInfo => {
-    console.log(userInfo);
-  
-  })
+    .then(userInfo => {
+      console.log(userInfo);
+
+    })
 }
 
 //Listen
