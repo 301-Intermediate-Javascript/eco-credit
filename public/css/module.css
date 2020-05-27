@@ -83,6 +83,11 @@ footer {
   font-family: 'Oxygen Mono', monospace;
 }
 
+.eco-credit-display {
+  font-size: 15px;
+  font-family: 'Krona One', sans-serif;
+}
+
 .small-profile-pic {
   width: 30px;
   height: 30px;
@@ -133,7 +138,6 @@ footer {
   color: white;
 }
 
-
 .button-link {
   background: linear-gradient(180deg, #479030 5%, #70B45A 100%);
   font-size: 30px;
@@ -142,7 +146,7 @@ footer {
   text-align: center;
 
   border: 2px #116416 solid;
-  width: 480px;
+  width: 300px;
   height: 90px;
   margin: 10px;
 }
@@ -163,4 +167,19 @@ footer {
   border: 2px black solid;
   width: 600px;
   height: 600px;
+}
+
+#survey-title {
+  font-size: 15px;
+  font-family: 'Krona One', sans-serif;
+  margin: 10px;
+}
+
+#ecocredit-survey {
+  font-family: 'Oxygen Mono', monospace;
+  padding: 5px;
+}
+
+#ecocredit-survey > button {
+  margin: 10px;
 }
