@@ -1,14 +1,14 @@
 <section>
     <form action="/dashboard/map?username=<%= user %>" method="POST">
-        <legend>Take the Eco Cred Survey</legend>
-        <fieldset>
-    <label for="shower">How many Minutes Per Day do you Shower?</label>
-    <input type="text" name="shower"><br>
-    <label for="gas">How many gallons of Gas per day do you use?</label>
-    <input type="text" name="gas"><br>
-    <label for="electricity">How many is your electric bill each month?(in dollars)</label>
-    <input type="text" name="electricity"><br>
-    <button type="submit">Submit Survey</button>
-</fieldset>
+        <legend id="survey-title">What's Your Eco-Credit?</legend>
+        <fieldset id="ecocredit-survey">
+            <label for="shower">How many minutes per day do you Shower?</label>
+            <input type="text" name="shower"><br>
+            <label for="gas">How many gallons of gas per day do you use?</label>
+            <input type="text" name="gas"><br>
+            <label for="electricity">How much is your electric bill each month? (in USD)</label>
+            <input type="text" name="electricity"><br>
+            <button type="submit">Submit Survey</button>
+        </fieldset>
     </form>
 </section>
