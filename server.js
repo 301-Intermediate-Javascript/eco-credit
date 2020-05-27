@@ -33,7 +33,9 @@ client.connect();
 app.get('/', homeTest);
 app.post('/account/exist', accountLogin);
 app.get('/account/login', renderLogin);
-app.post('/account/create', createAccount)
+app.post('/account/create', createAccount);
+app. get('/dashboard/survey', takeSurvey);
+app.post('/dashboard/map', displayMap);
 
 // Route Callbacks
 
@@ -78,6 +80,35 @@ function accountLogin(req, res){
     }else{
       res.render('complete/login', {'failed': true, 'accountCreated': false})
     }
+  })
+}
+
+// Route '/dashboard/survey'
+
+function takeSurvey(req, res){
+  res.render('complete/survey', {'user': req.query.username});
+};
+
+// Route '/dashboard/map'
+
+function displayMap(req, res){
+  console.log(req.body)
+  const idSql = 'SELECT id FROM profiles WHERE username=$1';
+  const idValue = [req.query.username];
+  client.query(idSql, idValue)
+  .then(id => {
+    const sql = 'INSERT INTO surveyinfo (username, energy, shower, car_travel) VALUES($1, $2, $3, $4)';
+    const values = [id.rows[0].id, req.body.electricity, req.body.shower, req.body.gas];
+    client.query(sql, values)
+    .then(result => {
+      const googleMaps = 'https://maps.googleapis.com/maps/api/geocode/json?address=98146&key=AIzaSyAQBXJLLKKnFDBx1eG3NrwyXEuNzY93jkA';
+      superagent(googleMaps)
+      .then(map =>{
+        console.log(map);
+        res.render('complete/map')
+
+      })
+    })
   })
 }
 
