@@ -1,7 +1,7 @@
 'use strict';
 
 // Required Packages
-const superAgent = require('superagent');
+const superagent = require('superagent');
 const express = require('express');
 const methodOverride = require('method-override');
 const pg = require('pg');
@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 5050;
 
 // For Form Use
 
-app.use(express.static('./Public'));
+app.use(express.static('./public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_overrideMethod'));
 // Config
@@ -24,13 +24,12 @@ app.use(methodOverride('_overrideMethod'));
 app.set('view engine', 'ejs');
 
 // Middleware
-    const client = new pg.Client(process.env.DATABASE_URL);
-    client.on('error', console.error);
-    client.connect();
+const client = new pg.Client(process.env.DATABASE_URL);
+client.on('error', console.error);
+client.connect();
 
 // Server Locations
 // Get, POST etc
-
 app.get('/', homeTest);
 app.post('/account/exist', accountLogin);
 app.get('/account/login', renderLogin);
@@ -83,7 +82,4 @@ function accountLogin(req, res){
 }
 
 //Listen
-
-app.listen(PORT, () => {
-  console.log(`Listening to PORT ${PORT}`)
-});
+app.listen(PORT, () => { console.log(`Listening to PORT ${PORT}`) });
