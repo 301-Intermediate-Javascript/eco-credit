@@ -17,5 +17,6 @@ function initMap() {
       var heatmap = new google.maps.visualization.HeatmapLayer({
           data: heatmapData
         });
+        console.log('hi');
         heatmap.setMap(map);
     }

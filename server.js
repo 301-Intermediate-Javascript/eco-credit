@@ -185,16 +185,21 @@ function displayMap(req, res) {
         })
         })
     })
-}
-function googleMap(res) {
 
-  const googleMaps = `https://maps.googleapis.com/maps/api/geocode/json?address=98146&key=${process.env.MAP_API}`;
-  superagent(googleMaps)
-    .then(map => {
-      console.log(map.body.results[0].geometry.location);
-      res.render('complete/map', { 'location': map.body.results[0].geometry.location, 'key': process.env.MAP_API })
+  }
 
-    })
-}
-//Listen
-app.listen(PORT, () => { console.log(`Listening to PORT ${PORT}`) });
+
+  function googleMap(res, eco, id) {
+    const zipSql = `SELECT zipcode FROM location WHERE username=${id}`;
+    client.query(zipSql)
+      .then(results => {
+        const googleMaps = `https://maps.googleapis.com/maps/api/geocode/json?address=${results.rows[0].zipcode}&key=${process.env.MAP_API}`;
+        superagent(googleMaps)
+          .then(map => {
+            res.render('complete/map', { 'location': map.body.results[0].geometry.location, 'key': process.env.MAP_API, 'eco': eco.rows })
+  
+          })
+      })
+  }
+  //Listen
+  app.listen(PORT, () => { console.log(`Listening to PORT ${PORT}`) });
