@@ -153,8 +153,7 @@ function displayMap(req, res) {
 }
 function googleMap(res) {
 
-
-  const googleMaps = 'https://maps.googleapis.com/maps/api/geocode/json?address=98146&key=AIzaSyDGsU2sEnTNy_-fbrZ2fre2kX53kSBwcW8';
+  const googleMaps = `https://maps.googleapis.com/maps/api/geocode/json?address=98146&key=${process.env.MAP_API}`;
   superagent(googleMaps)
     .then(map => {
       console.log(map.body.results[0].geometry.location);
