@@ -40,6 +40,11 @@ app.post('/dashboard/map', displayMap);
 
 // Route Callbacks
 
+// test route for suggestions
+app.get('/testsuggestions', (req, res) => {
+  res.render('complete/suggestions');
+})
+
 //test route for CarbonFootprint API
 app.get('/test2', getCarCO2);
 function getCarCO2(req, res) {
