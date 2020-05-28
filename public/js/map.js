@@ -30,6 +30,7 @@ function initMap() {
         var heatmap = new google.maps.visualization.HeatmapLayer({
           data: heatmapData
         });
+        console.log('hi');
         heatmap.setMap(map);
           var gradient = [
             'rgba(0, 190, 0, 0)',
