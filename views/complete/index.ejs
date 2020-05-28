@@ -24,7 +24,7 @@
                 <p>My Dashboard</p>
             </a>
 
-            <p class="eco-credit-display">Eco-Credit: 100</p>
+            <p class="eco-credit-display">Eco-Credit: <%=ecoscore%> </p>
 
             <a href="/" class="account-link">
                 <p>Logout</p>
@@ -41,17 +41,16 @@
         <% } %>        
     </nav>
     <% if(loggedIn){ %>
-        <a href="/dashboard/survey?username=<%= user %>">Survey</a>
-        <form action="/dashboard/survey?username=<%= user %>" method="POST">
-            <button type="submit" class="button-link">Take Survey</button> 
+        <form action="/dashboard/survey" method="get">
+            <button type="submit" name="username" value="<%= user %>" class="button-link">Take Survey</button> 
         </form>
 
-        <form action="/dashboard/survey/update?username=<%= user %>" method="get">
-            <button type="submit" class="button-link">Update Survey</button> 
+        <form action="/dashboard/survey/update" method="get">
+            <button type="submit" name="username" value="<%= user %>" class="button-link">Update Survey</button> 
         </form>
 
-        <form action="/dashboard/suggestions?username=<%= user %>" method="get">
-            <button type="submit" class="button-link">Suggestions</button> 
+        <form action="/dashboard/suggestions" method="get">
+            <button type="submit" name="username" value="<%= user %>" class="button-link">Suggestions</button> 
         </form>
     <% } %>
 
