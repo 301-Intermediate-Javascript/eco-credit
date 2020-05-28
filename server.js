@@ -51,7 +51,7 @@ function getCarCO2(req, res) {
   const url = 'https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromCarTravel';
   const myKey = process.env.RAPID_API_KEY;
   const queryForSuper = {
-    distance: '100',
+    distance: '100', //TODO: This will need to be updated to pull from req.body
     vehicle: 'SmallPetrolCar',
   };
   superagent.get(url)
@@ -66,7 +66,7 @@ function getCarCO2(req, res) {
         ecoScore++;
       }
       const insertScore = `UPDATE profiles SET ecoscore=$1 WHERE username=$2`;
-      const value = [ecoScore, 'bdavis'];
+      const value = [ecoScore, 'bdavis']; //TODO: this needs updating
       client.query(insertScore, value)
         .then(eco => {
           console.log(eco);
@@ -79,20 +79,29 @@ function getCarCO2(req, res) {
     .catch(error => {
       console.log('error from getCarCO2 :', error);
     });
-}
+} //TODO: needs a res.something
 
 // Route '/'
 function homeTest(req, res) {
   if (req.query.username) {
-    res.render('complete/index', { 'loggedIn': true, 'user': req.query.username })
+    //TODO: figure out where this goes...
+    //function to retrieve ecoscore
+    const getEcoScore = 'SELECT ecoscore FROM profiles WHERE username=$1';
+    const values = [req.query.username];
+    client.query(getEcoScore, values)
+      .then(returningEcoScore => {
+        console.log(returningEcoScore.rows[0].ecoscore);
+        res.render('complete/index', { 'loggedIn': true, 'user': req.query.username, 'ecoscore': returningEcoScore.rows[0].ecoscore })
+      })
+      .catch(error => {
+        console.log('error from homeTest sql query : ', error)});
+
   } else {
     res.render('complete/index', { 'loggedIn': false, 'user': req.query.username })
   }
-
 }
 
 // Route '/account/new'
-
 
 function createAccount(req, res) {
   const sqluserName = 'INSERT INTO profiles (username) VALUES($1) RETURNING ID';
@@ -107,7 +116,6 @@ function createAccount(req, res) {
         })
     })
 }
-
 
 // Route '/account/login'
 
@@ -126,15 +134,16 @@ function accountLogin(req, res) {
         res.render('complete/login', { 'failed': true, 'accountCreated': false })
       }
     })
+    .catch(error => {
+      console.log('error from accountLogin: ', error);
+    })
 }
 
 // Route '/dashboard/survey'
 
 function takeSurvey(req, res) {
   res.render('complete/survey', { 'user': req.query.username });
-
 }
-
 
 // Route '/dashboard/map'
 
@@ -154,7 +163,7 @@ function displayMap(req, res) {
     })
 }
 function googleMap(res) {
-    
+
   const googleMaps = `https://maps.googleapis.com/maps/api/geocode/json?address=98146&key=${process.env.MAP_API}`;
   superagent(googleMaps)
     .then(map => {
