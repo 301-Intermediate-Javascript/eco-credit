@@ -3,11 +3,6 @@ DROP TABLE IF EXISTS location CASCADE;
 DROP TABLE IF EXISTS surveyinfo CASCADE;
 DROP TABLE IF EXISTS carboninfo CASCADE;
 
-DROP TABLE IF EXISTS profiles CASCADE;
-DROP TABLE IF EXISTS location CASCADE;
-DROP TABLE IF EXISTS surveyinfo CASCADE;
-DROP TABLE IF EXISTS carboninfo CASCADE;
-
 CREATE TABLE profiles (
   id SERIAL PRIMARY KEY,
   ecoscore INT,
@@ -19,8 +14,9 @@ CREATE TABLE location (
   username INT NOT NULL,
   zipcode INT,
   ecoscore INT,
-  FOREIGN KEY (username) REFERENCES profiles (id),
-  
+
+  FOREIGN KEY (username) REFERENCES profiles (id)
+
 );
 
 CREATE TABLE surveyinfo (
