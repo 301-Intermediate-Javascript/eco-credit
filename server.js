@@ -132,7 +132,9 @@ function accountLogin(req, res) {
 
 function takeSurvey(req, res) {
   res.render('complete/survey', { 'user': req.query.username });
+
 }
+
 
 // Route '/dashboard/map'
 
@@ -142,12 +144,12 @@ function displayMap(req, res) {
   const idValue = [req.query.username];
   client.query(idSql, idValue)
     .then(id => {
-      console.log(id.rows)
+
       const sql = 'INSERT INTO surveyinfo (username, energy, shower, car_travel) VALUES($1, $2, $3, $4)';
       const values = [id.rows[0].id, req.body.electricity, req.body.shower, req.body.gas];
       client.query(sql, values)
         .then(result => {
-          googleMap(res)
+
         })
     })
 }
