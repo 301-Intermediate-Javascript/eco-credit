@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS carboninfo CASCADE;
 
 CREATE TABLE profiles (
   id SERIAL PRIMARY KEY,
+  ecoscore INT,
   username VARCHAR(255) UNIQUE NOT NULL
 );
 
@@ -17,6 +18,7 @@ CREATE TABLE location (
   id SERIAL PRIMARY KEY,
   username INT NOT NULL,
   zipcode INT,
+  ecoscore INT,
   FOREIGN KEY (username) REFERENCES profiles (id)
 );
 

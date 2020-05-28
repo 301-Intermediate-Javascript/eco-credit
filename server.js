@@ -58,8 +58,22 @@ function getCarCO2(req, res) {
     .set('x-rapidapi-key', myKey)
     .query(queryForSuper)
     .then(resultFromSuper => {
-      console.log(resultFromSuper.body.carbonEquivalent)
-      res.send(resultFromSuper.body.carbonEquivalent)
+      const car = resultFromSuper.body.carbonEquivalent;
+      let ecoScore = 50;
+      if (car > 1.7) {
+        ecoScore--;
+      } else {
+        ecoScore++;
+      }
+      const insertScore = `UPDATE profiles SET ecoscore=$1 WHERE username=$2`;
+      const value = [ecoScore, 'bdavis'];
+      client.query(insertScore, value)
+        .then(eco => {
+          console.log(eco);
+        })
+        .catch(error => {
+          console.log('error from ecoScore :', error);
+        })
       // Returns the CO2e in Kg from a travel by car
     })
     .catch(error => {
@@ -118,30 +132,37 @@ function accountLogin(req, res) {
 
 function takeSurvey(req, res) {
   res.render('complete/survey', { 'user': req.query.username });
-};
+
+}
+
 
 // Route '/dashboard/map'
 
 function displayMap(req, res) {
   console.log(req.body)
-  const idSql = 'SELECT id FROM profiles WHERE username=$1';
+  const idSql = 'SELECT * FROM profiles WHERE username=$1';
   const idValue = [req.query.username];
   client.query(idSql, idValue)
     .then(id => {
+
       const sql = 'INSERT INTO surveyinfo (username, energy, shower, car_travel) VALUES($1, $2, $3, $4)';
       const values = [id.rows[0].id, req.body.electricity, req.body.shower, req.body.gas];
       client.query(sql, values)
         .then(result => {
-          const googleMaps = 'https://maps.googleapis.com/maps/api/geocode/json?address=98146&key=AIzaSyAQBXJLLKKnFDBx1eG3NrwyXEuNzY93jkA';
-          superagent(googleMaps)
-            .then(map => {
-              console.log(map);
-              res.render('complete/map')
 
-            })
         })
     })
 }
+function googleMap(res) {
 
+
+  const googleMaps = 'https://maps.googleapis.com/maps/api/geocode/json?address=98146&key=AIzaSyDGsU2sEnTNy_-fbrZ2fre2kX53kSBwcW8';
+  superagent(googleMaps)
+    .then(map => {
+      console.log(map.body.results[0].geometry.location);
+      res.render('complete/map', { 'location': map.body.results[0].geometry.location, 'key': process.env.MAP_API })
+
+    })
+}
 //Listen
 app.listen(PORT, () => { console.log(`Listening to PORT ${PORT}`) });
