@@ -175,7 +175,7 @@ function displayMap(req, res) {
                   const ecoScoreSql = 'SELECT ecoscore FROM profiles';
                   client.query(ecoScoreSql)
                     .then(eco => {
-
+                      console.log(eco)
                       googleMap(res, eco, id.rows[0].id)
                     })
                 })
