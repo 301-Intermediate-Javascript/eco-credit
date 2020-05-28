@@ -41,8 +41,7 @@
         <% } %>        
     </nav>
     <% if(loggedIn){ %>
-        <a href="/dashboard/survey?username=<%= user %>">Survey</a>
-        <form action="/dashboard/survey?username=<%= user %>" method="POST">
+        <form action="/dashboard/survey?username=<%= user %>" method="get">
             <button type="submit" class="button-link">Take Survey</button> 
         </form>
 

@@ -19,8 +19,7 @@ CREATE TABLE location (
   username INT NOT NULL,
   zipcode INT,
   ecoscore INT,
-  FOREIGN KEY (username) REFERENCES profiles (id),
-  
+  FOREIGN KEY (username) REFERENCES profiles (id)
 );
 
 CREATE TABLE surveyinfo (
