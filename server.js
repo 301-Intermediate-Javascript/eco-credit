@@ -51,14 +51,13 @@ function getCarCO2(req, res) {
   const url = 'https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromCarTravel';
   const myKey = process.env.RAPID_API_KEY;
   const queryForSuper = {
-    distance: '100',
+    distance: '100', //TODO: This will need to be updated to pull from req.body
     vehicle: 'SmallPetrolCar',
   };
   superagent.get(url)
     .set('x-rapidapi-key', myKey)
     .query(queryForSuper)
     .then(resultFromSuper => {
-
       const car = resultFromSuper.body.carbonEquivalent;
       let ecoScore = 50;
       if (car > 1.7) {
@@ -67,10 +66,10 @@ function getCarCO2(req, res) {
         ecoScore++;
       }
       const insertScore = `UPDATE profiles SET ecoscore=$1 WHERE username=$2`;
-      const value = [30, 'bdavis'];
+      const value = [ecoScore, 'bdavis']; //TODO: this needs updating
       client.query(insertScore, value)
         .then(eco => {
-          // console.log(eco);
+          console.log(eco);
         })
         .catch(error => {
           console.log('error from ecoScore :', error);
@@ -80,20 +79,29 @@ function getCarCO2(req, res) {
     .catch(error => {
       console.log('error from getCarCO2 :', error);
     });
-}
+} //TODO: needs a res.something
 
 // Route '/'
 function homeTest(req, res) {
   if (req.query.username) {
-    res.render('complete/index', { 'loggedIn': true, 'user': req.query.username })
+    //TODO: figure out where this goes...
+    //function to retrieve ecoscore
+    const getEcoScore = 'SELECT ecoscore FROM profiles WHERE username=$1';
+    const values = [req.query.username];
+    client.query(getEcoScore, values)
+      .then(returningEcoScore => {
+        console.log(returningEcoScore.rows[0].ecoscore);
+        res.render('complete/index', { 'loggedIn': true, 'user': req.query.username, 'ecoscore': returningEcoScore.rows[0].ecoscore })
+      })
+      .catch(error => {
+        console.log('error from homeTest sql query : ', error)});
+
   } else {
     res.render('complete/index', { 'loggedIn': false, 'user': req.query.username })
   }
-
 }
 
 // Route '/account/new'
-
 
 function createAccount(req, res) {
   const sqluserName = 'INSERT INTO profiles (username) VALUES($1) RETURNING ID';
@@ -108,7 +116,6 @@ function createAccount(req, res) {
         })
     })
 }
-
 
 // Route '/account/login'
 
@@ -127,30 +134,25 @@ function accountLogin(req, res) {
         res.render('complete/login', { 'failed': true, 'accountCreated': false })
       }
     })
+    .catch(error => {
+      console.log('error from accountLogin: ', error);
+    })
 }
 
 // Route '/dashboard/survey'
 
 function takeSurvey(req, res) {
   res.render('complete/survey', { 'user': req.query.username });
-
 }
-
 
 // Route '/dashboard/map'
 
 function displayMap(req, res) {
-  const url = 'https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromCarTravel';
-  const myKey = process.env.RAPID_API_KEY;
-  const queryForSuper = {
-    distance: req.body.gas,
-    vehicle: 'SmallPetrolCar'
-  };
-  superagent.get(url)
-    .set('x-rapidapi-key', myKey)
-    .query(queryForSuper)
-    .then(resultFromSuper => {
-
+  console.log(req.body)
+  const idSql = 'SELECT * FROM profiles WHERE username=$1';
+  const idValue = [req.query.username];
+  client.query(idSql, idValue)
+    .then(id => {
       const car = resultFromSuper.body.carbonEquivalent;
       let ecoScore = 50;
       if (car > 1.7) {
@@ -175,14 +177,15 @@ function displayMap(req, res) {
                   const ecoScoreSql = 'SELECT ecoscore FROM profiles';
                   client.query(ecoScoreSql)
                     .then(eco => {
-                      console.log(eco);
+                      console.log(eco)
                       googleMap(res, eco, id.rows[0].id)
                     })
                 })
             })
         })
-
+        })
     })
+
   }
 
 
