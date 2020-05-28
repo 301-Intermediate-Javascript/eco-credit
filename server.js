@@ -148,11 +148,16 @@ function takeSurvey(req, res) {
 // Route '/dashboard/map'
 
 function displayMap(req, res) {
-  console.log(req.body)
-  const idSql = 'SELECT * FROM profiles WHERE username=$1';
-  const idValue = [req.query.username];
-  client.query(idSql, idValue)
-    .then(id => {
+  const url = 'https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromCarTravel';
+  const myKey = process.env.RAPID_API_KEY;
+  const queryForSuper = {
+    distance: '100', //TODO: This will need to be updated to pull from req.body
+    vehicle: 'SmallPetrolCar',
+  };
+  superagent.get(url)
+    .set('x-rapidapi-key', myKey)
+    .query(queryForSuper)
+    .then(resultFromSuper => {
       const car = resultFromSuper.body.carbonEquivalent;
       let ecoScore = 50;
       if (car > 1.7) {
@@ -184,7 +189,6 @@ function displayMap(req, res) {
             })
         })
         })
-    })
 
   }
 
