@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/css/module.css">
 </head>
 <body>
+    <%- include('../partials/header.ejs') %>
     <a href="/account/login" id="login">Login</a>
     <p>(Don't have an account?)</p>
     <a href="/account/login" id="createAccount">Create an account</a>
@@ -29,5 +30,5 @@
   crossorigin="anonymous"></script>
   <script src="/js/app.js"></script>
 </body>
-
+<%- include('../partials/footer.ejs') %>
 </html>
