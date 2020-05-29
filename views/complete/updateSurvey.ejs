@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <section>
+        <form action="/dashboard/survey/update/done?id=<%= surveyInfo.username %>&username=<%= username%>&_overrideMethod=PUT"" method="POST">
+        <label for="energy">How much is your electric bill each month? (in USD)</label>
+        <input type="text" name="energy" value="<%= surveyInfo.energy %>"><br>
+        <label for="shower">Minutes per day do you Shower</label>
+        <input type="text" name="shower" value="<%= surveyInfo.shower %>"><br>
+        <label for="car_travel">Miles traveled per day</label>
+        <input type="text" name="car_travel" value="<%= surveyInfo.car_travel %>"><br>
+        <button type="submit">Update</button>
+        </form>
+    </section>
+</body>
+</html>
