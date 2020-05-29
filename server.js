@@ -37,6 +37,8 @@ app.get('/account/login', renderLogin);
 app.post('/account/create', createAccount);
 app.get('/dashboard/survey', takeSurvey);
 app.post('/dashboard/map', displayMap);
+app.get('/dashboard/survey/get', getSurvey)
+app.put('/dashboard/survey/update/done', updateSurvey);
 
 // Route Callbacks
 
@@ -206,5 +208,35 @@ function displayMap(req, res) {
           })
       })
   }
+
+//Route '/dashboard/survey/get'
+function getSurvey(req, res){
+  const surveySql = 'SELECT id FROM profiles WHERE username=$1';
+  const value = [req.query.username];
+  client.query(surveySql, value)
+  .then(id =>{
+    const updateSql ='SELECT * FROM surveyinfo WHERE username=$1';
+    const updateValue = [id.rows[0].id];
+    client.query(updateSql, updateValue)
+    .then(results =>{
+      res.render('complete/updateSurvey', {'surveyInfo':results.rows[results.rows.length-1], username: req.query.username })
+    })
+  })
+}
+
+//Route '/dashboard/survey/update'
+
+function updateSurvey(req, res){
+  console.log(req.query)
+  const sql = 'UPDATE surveyinfo SET energy=$1, shower=$2, car_travel=$3 WHERE username=$4';
+  const values = [req.body.energy, req.body.shower, req.body.car_travel, req.query.id];
+  client.query(sql, values)
+  .then(result =>{
+    console.log(req.query.username)
+    res.redirect('/dashboard/survey/get?username=' + req.query.username)
+  })
+}
+
   //Listen
+  
   app.listen(PORT, () => { console.log(`Listening to PORT ${PORT}`) });
