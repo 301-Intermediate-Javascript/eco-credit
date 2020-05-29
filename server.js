@@ -37,6 +37,10 @@ app.get('/account/login', renderLogin);
 app.post('/account/create', createAccount);
 app.get('/dashboard/survey', takeSurvey);
 app.post('/dashboard/map', displayMap);
+app.get('/dashboard/survey/get', getSurvey)
+app.put('/dashboard/survey/update/done', updateSurvey);
+app.get('/account/view', viewAccount);
+app.put('/account/update', updateAccount);
 
 // Route Callbacks
 
@@ -90,8 +94,7 @@ function homeTest(req, res) {
     const values = [req.query.username];
     client.query(getEcoScore, values)
       .then(returningEcoScore => {
-        console.log(returningEcoScore.rows[0].ecoscore);
-        res.render('complete/index', { 'loggedIn': true, 'user': req.query.username, 'ecoscore': returningEcoScore.rows[0].ecoscore })
+        res.render('complete/index', { 'loggedIn': true, 'id': req.query.id, 'user': req.query.username, 'ecoscore': returningEcoScore.rows[0].ecoscore })
       })
       .catch(error => {
         console.log('error from homeTest sql query : ', error)
@@ -129,7 +132,7 @@ function accountLogin(req, res) {
   client.query(sql, value)
     .then(userInfo => {
       if (userInfo.rows.length > 0) {
-        res.redirect('/?username=' + req.body.userName);
+        res.redirect('/?username=' + req.body.userName + '&id=' + userInfo.rows[0].id);
       } else {
         res.render('complete/login', { 'failed': true, 'accountCreated': false, 'loggedIn': false })
       }
@@ -200,7 +203,6 @@ function displayMap(req, res) {
 
 }
 
-
 function googleMap(req, res, eco, id) {
   const zipSql = `SELECT zipcode FROM location WHERE username=${id}`;
   client.query(zipSql)
@@ -225,3 +227,67 @@ function googleMap(req, res, eco, id) {
 }
 //Listen
 app.listen(PORT, () => { console.log(`Listening to PORT ${PORT}`) });
+
+//Route '/dashboard/survey/get'
+function getSurvey(req, res){
+  const surveySql = 'SELECT id FROM profiles WHERE username=$1';
+  const value = [req.query.username];
+  client.query(surveySql, value)
+  .then(id =>{
+    const updateSql ='SELECT * FROM surveyinfo WHERE username=$1';
+    const updateValue = [id.rows[0].id];
+    client.query(updateSql, updateValue)
+    .then(results =>{
+      res.render('complete/updateSurvey', {'surveyInfo':results.rows[results.rows.length-1], username: req.query.username })
+    })
+  })
+}
+
+// Route '/dashboard/survey/update'
+
+function updateSurvey(req, res){
+  console.log(req.query)
+  const sql = 'UPDATE surveyinfo SET energy=$1, shower=$2, car_travel=$3 WHERE username=$4';
+  const values = [req.body.energy, req.body.shower, req.body.car_travel, req.query.id];
+  client.query(sql, values)
+  .then(result =>{
+    console.log(req.query.username)
+    res.redirect('/dashboard/survey/get?username=' + req.query.username)
+  })
+}
+
+// Route '/account/view'
+
+function viewAccount(req, res){
+  const sql = 'SELECT * FROM profiles WHERE username=$1';
+  const value = [req.query.username];
+  client.query(sql, value)
+  .then(results =>{
+    const zipSql = 'SELECT zipcode FROM location WHERE username=$1';
+    const zipvalue = [req.query.id];
+    client.query(zipSql, zipvalue)
+    .then(zip =>{
+      res.render('complete/account', {'user': results.rows[0], 'zipcode': zip.rows[0].zipcode, 'id': req.query.id})
+    })
+  })
+}
+
+// Route '/account/update'
+
+function updateAccount(req, res){
+  const sql = 'UPDATE profiles SET username=$1 WHERE id=$2';
+  const value = [req.body.username, req.query.id];
+  client.query(sql, value)
+  .then(() =>{
+    console.log(req.body)
+    const zipSql = 'UPDATE location SET zipcode=$1 WHERE username=$2';
+    const zipValue = [req.body.zipcode, req.query.id];
+    client.query(zipSql, zipValue)
+    .then(() =>{
+      res.redirect('/account/view?username=' + req.body.username + '&id=' + req.query.id)
+    })
+  })
+}
+  //Listen
+  
+  app.listen(PORT, () => { console.log(`Listening to PORT ${PORT}`) });
