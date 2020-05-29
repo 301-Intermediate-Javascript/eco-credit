@@ -149,7 +149,7 @@ function takeSurvey(req, res) {
   client.query(getEcoScore, values)
     .then(returningEcoScore => {
       console.log(returningEcoScore.rows[0].ecoscore);
-      res.render('complete/survey', { 'user': req.query.username, 'loggedIn': true, 'ecoscore': returningEcoScore.rows[0].ecoscore });
+      res.render('complete/survey', { 'user': req.query.username, 'id': req.query.id, 'loggedIn': true, 'ecoscore': returningEcoScore.rows[0].ecoscore });
     })
     .catch(error => {
       console.log('error from homeTest sql query : ', error)
@@ -216,7 +216,7 @@ function googleMap(req, res, eco, id) {
             .then(returningEcoScore => {
               console.log(returningEcoScore.rows[0].ecoscore);
               console.log(eco.rows)
-              res.render('complete/map', { 'location': map.body.results[0].geometry.location, 'key': process.env.MAP_API, 'eco': eco.rows, 'user': req.query.username, 'loggedIn': true, 'ecoscore': returningEcoScore.rows[0].ecoscore })
+              res.render('complete/map', { 'location': map.body.results[0].geometry.location, 'key': process.env.MAP_API, 'eco': eco.rows, 'user': req.query.username, 'id': req.query.id, 'loggedIn': true, 'ecoscore': returningEcoScore.rows[0].ecoscore })
             })
             .catch(error => {
               console.log('error from homeTest sql query : ', error)
