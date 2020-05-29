@@ -200,6 +200,7 @@ function displayMap(req, res) {
         const googleMaps = `https://maps.googleapis.com/maps/api/geocode/json?address=${results.rows[0].zipcode}&key=${process.env.MAP_API}`;
         superagent(googleMaps)
           .then(map => {
+            console.log(eco.rows)
             res.render('complete/map', { 'location': map.body.results[0].geometry.location, 'key': process.env.MAP_API, 'eco': eco.rows })
   
           })
