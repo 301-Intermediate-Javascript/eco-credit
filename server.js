@@ -97,7 +97,8 @@ function homeTest(req, res) {
         res.render('complete/index', { 'loggedIn': true, 'id': req.query.id, 'user': req.query.username, 'ecoscore': returningEcoScore.rows[0].ecoscore })
       })
       .catch(error => {
-        console.log('error from homeTest sql query : ', error)});
+        console.log('error from homeTest sql query : ', error)
+      });
 
   } else {
     res.render('complete/index', { 'loggedIn': false, 'user': req.query.username })
@@ -115,15 +116,14 @@ function createAccount(req, res) {
       const zipcodeValue = [username.rows[0].id, req.body.zipCode];
       client.query(zipCodeSql, zipcodeValue)
         .then(zipcode => {
-          res.render('complete/login', { 'accountCreated': true, 'failed': false });
+          res.render('complete/login', { 'accountCreated': true, 'failed': false, 'loggedIn': false });
         })
     })
 }
 
 // Route '/account/login'
-
 function renderLogin(req, res) {
-  res.render('complete/login', { 'accountCreated': false, 'failed': false });
+  res.render('complete/login', { 'accountCreated': false, 'failed': false, 'loggedIn': false });
 }
 
 function accountLogin(req, res) {
@@ -134,7 +134,7 @@ function accountLogin(req, res) {
       if (userInfo.rows.length > 0) {
         res.redirect('/?username=' + req.body.userName + '&id=' + userInfo.rows[0].id);
       } else {
-        res.render('complete/login', { 'failed': true, 'accountCreated': false })
+        res.render('complete/login', { 'failed': true, 'accountCreated': false, 'loggedIn': false })
       }
     })
     .catch(error => {
@@ -143,13 +143,20 @@ function accountLogin(req, res) {
 }
 
 // Route '/dashboard/survey'
-
 function takeSurvey(req, res) {
-  res.render('complete/survey', { 'user': req.query.username });
+  const getEcoScore = 'SELECT ecoscore FROM profiles WHERE username=$1';
+  const values = [req.query.username];
+  client.query(getEcoScore, values)
+    .then(returningEcoScore => {
+      console.log(returningEcoScore.rows[0].ecoscore);
+      res.render('complete/survey', { 'user': req.query.username, 'loggedIn': true, 'ecoscore': returningEcoScore.rows[0].ecoscore });
+    })
+    .catch(error => {
+      console.log('error from homeTest sql query : ', error)
+    });
 }
 
 // Route '/dashboard/map'
-
 function displayMap(req, res) {
   const url = 'https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromCarTravel';
   const myKey = process.env.RAPID_API_KEY;
@@ -172,12 +179,13 @@ function displayMap(req, res) {
       const value = [ecoScore, req.query.username];
       client.query(insertScore, value)
         .then(eco => {
-          // console.log(eco);
+          console.log(eco);
 
           const idSql = 'SELECT id FROM profiles WHERE username=$1';
           const idValue = [req.query.username];
           client.query(idSql, idValue)
             .then(id => {
+              console.log(id);
               const sql = 'INSERT INTO surveyinfo (username, energy, shower, car_travel) VALUES($1, $2, $3, $4)';
               const values = [id.rows[0].id, req.body.electricity, req.body.shower, req.body.gas];
               client.query(sql, values)
@@ -186,29 +194,39 @@ function displayMap(req, res) {
                   client.query(ecoScoreSql)
                     .then(eco => {
                       console.log(eco)
-                      googleMap(res, eco, id.rows[0].id)
+                      googleMap(req, res, eco, id.rows[0].id)
                     })
                 })
             })
         })
+    })
+
+}
+
+function googleMap(req, res, eco, id) {
+  const zipSql = `SELECT zipcode FROM location WHERE username=${id}`;
+  client.query(zipSql)
+    .then(results => {
+      const googleMaps = `https://maps.googleapis.com/maps/api/geocode/json?address=${results.rows[0].zipcode}&key=${process.env.MAP_API}`;
+      superagent(googleMaps)
+        .then(map => {
+          const getEcoScore = 'SELECT ecoscore FROM profiles WHERE username=$1';
+          const values = [req.query.username];
+          client.query(getEcoScore, values)
+            .then(returningEcoScore => {
+              console.log(returningEcoScore.rows[0].ecoscore);
+              console.log(eco.rows)
+              res.render('complete/map', { 'location': map.body.results[0].geometry.location, 'key': process.env.MAP_API, 'eco': eco.rows, 'user': req.query.username, 'loggedIn': true, 'ecoscore': returningEcoScore.rows[0].ecoscore })
+            })
+            .catch(error => {
+              console.log('error from homeTest sql query : ', error)
+            });
+
         })
-
-  }
-
-
-  function googleMap(res, eco, id) {
-    const zipSql = `SELECT zipcode FROM location WHERE username=${id}`;
-    client.query(zipSql)
-      .then(results => {
-        const googleMaps = `https://maps.googleapis.com/maps/api/geocode/json?address=${results.rows[0].zipcode}&key=${process.env.MAP_API}`;
-        superagent(googleMaps)
-          .then(map => {
-            console.log(eco.rows)
-            res.render('complete/map', { 'location': map.body.results[0].geometry.location, 'key': process.env.MAP_API, 'eco': eco.rows })
-  
-          })
-      })
-  }
+    })
+}
+//Listen
+app.listen(PORT, () => { console.log(`Listening to PORT ${PORT}`) });
 
 //Route '/dashboard/survey/get'
 function getSurvey(req, res){

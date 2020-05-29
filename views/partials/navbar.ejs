@@ -1,0 +1,23 @@
+<nav>
+  <% if(loggedIn){ %>
+      <a href="/?username=<%= user %>" class="nav-link">
+          <p>My Dashboard</p>
+      </a>
+      <% if(ecoscore) { %>
+        <p class="eco-credit-display">Eco-Credit: <%=ecoscore%> </p>
+      <% } %>
+
+      <a href="/" class="account-link">
+          <p>Logout</p>
+          <img src="/images/default_acct_icon.png" class="small-profile-pic">
+      </a>
+  <% } else { %>
+      <a href="/" class="nav-link">
+          <p>Home</p>
+      </a>
+
+      <a href="/account/login" class="account-link">
+          <p>Login</p>
+      </a>
+  <% } %>        
+</nav>
