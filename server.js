@@ -37,7 +37,7 @@ app.get('/account/login', renderLogin);
 app.post('/account/create', createAccount);
 app.get('/dashboard/survey', takeSurvey);
 app.post('/dashboard/map', displayMap);
-app.get('/dashboard/survey/get', getSurvey)
+app.get('/dashboard/survey/get', getSurvey);
 app.put('/dashboard/survey/update/done', updateSurvey);
 app.get('/account/view', viewAccount);
 app.put('/account/update', updateAccount);
@@ -45,9 +45,11 @@ app.put('/account/update', updateAccount);
 // Route Callbacks
 
 // test route for suggestions
-app.get('/testsuggestions', (req, res) => {
-  res.render('complete/suggestions');
-})
+app.get('/dashboard/suggestions', showSuggestions);
+
+function showSuggestions(req, res) {
+  res.render('complete/suggestions',{'user': req.query.username, 'id': req.query.id, 'loggedIn': true, 'ecoscore': '50'});
+} // TODO: not retrieving actual eco score yet
 
 //test route for CarbonFootprint API
 app.get('/test2', getCarCO2);
@@ -83,13 +85,11 @@ function getCarCO2(req, res) {
     .catch(error => {
       console.log('error from getCarCO2 :', error);
     });
-} //TODO: needs a res.something
+}
 
 // Route '/'
 function homeTest(req, res) {
   if (req.query.username) {
-    //TODO: figure out where this goes...
-    //function to retrieve ecoscore
     const getEcoScore = 'SELECT ecoscore FROM profiles WHERE username=$1';
     const values = [req.query.username];
     client.query(getEcoScore, values)
@@ -236,7 +236,16 @@ function getSurvey(req, res) {
       const updateValue = [id.rows[0].id];
       client.query(updateSql, updateValue)
         .then(results => {
-          res.render('complete/updateSurvey', { 'surveyInfo': results.rows[results.rows.length - 1], username: req.query.username })
+          const getEcoScore = 'SELECT ecoscore FROM profiles WHERE username=$1';
+          const values = [req.query.username];
+          client.query(getEcoScore, values)
+            .then(returningEcoScore => {
+              console.log(returningEcoScore.rows[0].ecoscore);
+              res.render('complete/updateSurvey', { 'surveyInfo': results.rows[results.rows.length - 1], user: req.query.username, 'id': req.query.id, 'loggedIn': true, 'ecoscore': returningEcoScore.rows[0].ecoscore})
+            })
+            .catch(error => {
+              console.log('error from homeTest sql query : ', error)
+            });
         })
     })
 }

@@ -18,13 +18,12 @@ Individuals are concerned about their impact they have on the environment and ne
 * A user can view suggestions based on their score to change their lifestyle
 * A user will be able to compare their Eco Credit Score compared to others in their community
 
-
-
 ## Non-Functional Requirements
 ## Usability
 * Eco Credit Score will be available on all pages in the same location once they login
 * Will simplify our surveys compared to other Eco Surveys by only asking their most recent information vs last year worth of information
 * Will reduce clutter to make it easier to navigate the website and make it clear what is where
+
 ## Performance
 * Uses server-side rendering to show the use a completed webpage upon load. This is accomplished through use of EJS. It will provide a more professional experience for the user by not showing a flash of incomplete content upon load.
 
@@ -33,8 +32,8 @@ Individuals are concerned about their impact they have on the environment and ne
 * Will never be a platform for advertisemtns aka not a sell out
 
 ## MVP
-Our minimum viable project will be a webpage that does a survey to calculate sustainability score, stores that score into a database, and then plots that score on a map to show where your score compares to your neighborhood.
+Our minimum viable product will be a webpage with a survey to calculate sustainability score, stores that score into a database, and then plots that score on a map. It will show where your score compares to your neighborhood.
 
 ## Stretch Goals
 * OAuthorization Login with Google
-* Include bussiness's 
+* Include bussinesses

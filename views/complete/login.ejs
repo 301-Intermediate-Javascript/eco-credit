@@ -13,9 +13,9 @@
 </head>
 <body>
     <%- include('../partials/header.ejs') %>
-    <a href="/account/login" id="login">Login</a>
-    <p>(Don't have an account?)</p>
-    <a href="/account/login" id="createAccount">Create an account</a>
+    <a href="/account/login" id="login" class="login-form">Login</a>
+    <p class="login-form">(Don't have an account?)</p>
+    <a href="/account/login" id="createAccount" class="login-form">Create an account</a>
     <%- include('../partials/login.ejs') %>
     <%- include('../partials/createAccount.ejs') %>
     <% if(accountCreated){ %>
